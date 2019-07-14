@@ -22,10 +22,20 @@ node('docker && ubuntu-16.04') {
 
 		'''
 	}
-	stage("build") {
+	stage("build-tools-linux") {
 		sh '''#!/bin/sh
 			cd godot-updated
-			scons platform=x11 tools=no
+			scons platform=x11 -j8 tools=yes target=debug
+			scons platform=x11 -j8 tools=yes target=release_debug
+			scons platform=server -j8 tools=yes target=release_debug
+		'''
+	}
+	stage("build-templates-linux") {
+		sh '''#!/bin/sh
+			cd godot-updated
+			scons platform=x11 -j8 tools=no target=debug
+			scons platform=x11 -j8 tools=no target=release_debug
+			scons platform=server -j8 tools=no target=release_debug
 		'''
 	}
 	stage("artifacts") {
