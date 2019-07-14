@@ -34,33 +34,44 @@ node('docker && ubuntu-16.04') {
 			./emsdk install latest
 			./emsdk activate latest
 			cd ..
-			wget https://netix.dl.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v5.0.4.tar.bz2
-			tar xf mingw-w64-v5.0.4.tar.bz2
-			wget -Ointsafe.h https://raw.githubusercontent.com/Alexpux/mingw-w64/master/mingw-w64-headers/include/intsafe.h
-			cp intsafe.h godot-updated/thirdparty/mbedtls/include/
+			# wget https://netix.dl.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v5.0.4.tar.bz2
+			# tar xf mingw-w64-v5.0.4.tar.bz2
+			# wget -Ointsafe.h https://raw.githubusercontent.com/Alexpux/mingw-w64/master/mingw-w64-headers/include/intsafe.h
+			# cp intsafe.h godot-updated/thirdparty/mbedtls/include/
 
 		'''
 	}
-#	stage("build-tools-linux") {
-#		sh '''#!/bin/sh
-#			cd godot-updated
-#			scons platform=x11 -j16 tools=yes target=debug
-#			scons platform=x11 -j16 tools=yes target=release_debug
-#			scons platform=server -j16 tools=yes target=release_debug
-#		'''
-#	}
-#	stage("build-templates-linux") {
-#		sh '''#!/bin/sh
-#			cd godot-updated
-#			scons platform=x11 -j16 tools=no target=debug
-#			scons platform=x11 -j16 tools=no target=release_debug
-#			scons platform=x11 -j16 tools=no target=release
-#			scons platform=server -j16 tools=no target=release_debug
-#		'''
-#	}
+/*
+	stage("build-tools-linux") {
+		sh '''#!/bin/sh
+			cd godot-updated
+			set -e
+			scons platform=x11 -j16 tools=yes target=debug
+			scons platform=x11 -j16 tools=yes target=release_debug
+			scons platform=server -j16 tools=yes target=release_debug
+		'''
+	}
+	stage("build-templates-linux") {
+		sh '''#!/bin/sh
+			cd godot-updated
+			set -e
+			scons platform=x11 -j16 tools=no target=debug
+			scons platform=x11 -j16 tools=no target=release_debug
+			scons platform=x11 -j16 tools=no target=release
+			scons platform=server -j16 tools=no target=release_debug
+		'''
+	}
+*/
+	stage("build-mingw-toolchain") {
+		git_clone('git://github.com/Zeranoe/mingw-w64-build', 'master', 'mingw-build')
+		sh '''#!/bin/sh
+			./mingw-w64-build --help
+		'''
+	}
 	stage("build-templates-windows") {
 		sh '''#!/bin/sh
 			cd godot-updated
+			set -e
 			scons platform=windows -j16 tools=no target=debug bits=64
 			scons platform=windows -j16 tools=no target=debug bits=32
 			scons platform=windows -j16 tools=no target=release_debug bits=64
