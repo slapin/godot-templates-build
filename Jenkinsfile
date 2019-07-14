@@ -18,7 +18,8 @@ node('docker && ubuntu-16.04') {
 			sudo apt-get update
 			sudo apt-get -y install build-essential scons pkg-config \
 				libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev \
-				libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm libfreetype6-dev makeinfo svn
+				libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm libfreetype6-dev texinfo \
+				texi2html subversion
 			cd godot-updated
 			misc/travis/android-tools-linux.sh
 			cd ..
