@@ -21,6 +21,18 @@ node('docker && ubuntu-16.04') {
 				libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm libfreetype6-dev mingw-w64
 			cd godot-updated
 			misc/travis/android-tools-linux.sh
+			cd ..
+			mkdir butler
+			cd butler
+			curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+			unzip butler.zip
+			chmod +x butler
+			./butler -V
+			cd ..
+			git clone https://github.com/emscripten-core/emsdk.git
+			cd emsdk
+			./emsdk install latest
+			./emsdk activate latest
 
 		'''
 	}
@@ -50,6 +62,15 @@ node('docker && ubuntu-16.04') {
 			scons platform=windows -j16 tools=no target=release_debug bits=32
 			scons platform=windows -j16 tools=no target=release bits=64
 			scons platform=windows -j16 tools=no target=release bits=32
+		'''
+	}
+	stage("build-templates-web") {
+		sh '''#!/bin/bash
+			cd emsdk
+			. emsdk_env.sh
+			cd godot-updated
+			scons platform=javascript tools=no target=release javascript_eval=no
+			scons platform=javascript tools=no target=release_debug javascript_eval=no
 		'''
 	}
 	stage("artifacts") {
