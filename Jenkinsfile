@@ -12,20 +12,27 @@ def git_clone(url, branch, dirname)
 node('docker && ubuntu-16.04') {
 	stage("clone") {
 		git_clone('git://github.com/slapin/godot', 'navigation', 'godot-updated')
-	sh '''#!/bin/sh
-		sudo apt-get install scons
-	'''
-	sh '''#!/bin/sh
-		cd godot-updated
-		scons platform=x11 tools=no
-	'''
-	sh '''#!/bin/sh
-		rm -Rf godot-templates
-		mkdir godot-templates
-		cp godot-updated/bin/* godot-templates
-		tar zcf godot-templates.tar.gz godot-templates
-		zip -r godot-templates.zip godot-templates
-	'''
-	archiveArtifacts artifacts: "godot-templates.tar.gz", onlyIfSuccessful: true
-	archiveArtifacts artifacts: "godot-templates.zip", onlyIfSuccessful: true
+	}
+	stage("init") {
+		sh '''#!/bin/sh
+			sudo apt-get install scons
+		'''
+	}
+	stage("build") {
+		sh '''#!/bin/sh
+			cd godot-updated
+			scons platform=x11 tools=no
+		'''
+	}
+	stage("artifacts") {
+		sh '''#!/bin/sh
+			rm -Rf godot-templates
+			mkdir godot-templates
+			cp godot-updated/bin/* godot-templates
+			tar zcf godot-templates.tar.gz godot-templates
+			zip -r godot-templates.zip godot-templates
+		'''
+		archiveArtifacts artifacts: "godot-templates.tar.gz", onlyIfSuccessful: true
+		archiveArtifacts artifacts: "godot-templates.zip", onlyIfSuccessful: true
+	}
 }
