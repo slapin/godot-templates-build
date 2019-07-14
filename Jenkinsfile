@@ -41,23 +41,23 @@ node('docker && ubuntu-16.04') {
 
 		'''
 	}
-	stage("build-tools-linux") {
-		sh '''#!/bin/sh
-			cd godot-updated
-			scons platform=x11 -j16 tools=yes target=debug
-			scons platform=x11 -j16 tools=yes target=release_debug
-			scons platform=server -j16 tools=yes target=release_debug
-		'''
-	}
-	stage("build-templates-linux") {
-		sh '''#!/bin/sh
-			cd godot-updated
-			scons platform=x11 -j16 tools=no target=debug
-			scons platform=x11 -j16 tools=no target=release_debug
-			scons platform=x11 -j16 tools=no target=release
-			scons platform=server -j16 tools=no target=release_debug
-		'''
-	}
+#	stage("build-tools-linux") {
+#		sh '''#!/bin/sh
+#			cd godot-updated
+#			scons platform=x11 -j16 tools=yes target=debug
+#			scons platform=x11 -j16 tools=yes target=release_debug
+#			scons platform=server -j16 tools=yes target=release_debug
+#		'''
+#	}
+#	stage("build-templates-linux") {
+#		sh '''#!/bin/sh
+#			cd godot-updated
+#			scons platform=x11 -j16 tools=no target=debug
+#			scons platform=x11 -j16 tools=no target=release_debug
+#			scons platform=x11 -j16 tools=no target=release
+#			scons platform=server -j16 tools=no target=release_debug
+#		'''
+#	}
 	stage("build-templates-windows") {
 		sh '''#!/bin/sh
 			cd godot-updated
