@@ -37,6 +37,7 @@ node('docker && ubuntu-16.04') {
 			cd godot-updated
 			scons platform=x11 -j8 tools=no target=debug
 			scons platform=x11 -j8 tools=no target=release_debug
+			scons platform=x11 -j8 tools=no target=release
 			scons platform=server -j8 tools=no target=release_debug
 		'''
 	}
