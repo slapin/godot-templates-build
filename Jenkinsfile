@@ -67,6 +67,8 @@ node('docker && ubuntu-16.04') {
 		sh '''#!/bin/sh
 			cd mingw-build
 			./mingw-w64-build --help
+			set -e
+			./mingw-w64-build i686 x86_64
 		'''
 	}
 	stage("build-templates-windows") {
