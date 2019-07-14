@@ -15,7 +15,7 @@ node('docker && ubuntu-16.04') {
 	}
 	stage("init") {
 		sh '''#!/bin/sh
-			sudo apt-get install build-essential scons pkg-config \
+			sudo apt-get -y install build-essential scons pkg-config \
 				libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev \
 				libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm
 
