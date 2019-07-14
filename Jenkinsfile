@@ -33,6 +33,11 @@ node('docker && ubuntu-16.04') {
 			cd emsdk
 			./emsdk install latest
 			./emsdk activate latest
+			cd ..
+			wget https://netix.dl.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v5.0.4.tar.bz2
+			tar xf mingw-w64-v5.0.4.tar.bz2
+			wget -Ointsafe.h https://raw.githubusercontent.com/Alexpux/mingw-w64/master/mingw-w64-headers/include/intsafe.h
+			cp intsafe.h godot-updated/thirdparty/mbedtls/include/
 
 		'''
 	}
