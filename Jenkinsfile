@@ -27,18 +27,29 @@ node('docker && ubuntu-16.04') {
 	stage("build-tools-linux") {
 		sh '''#!/bin/sh
 			cd godot-updated
-			scons platform=x11 -j8 tools=yes target=debug
-			scons platform=x11 -j8 tools=yes target=release_debug
-			scons platform=server -j8 tools=yes target=release_debug
+			scons platform=x11 -j16 tools=yes target=debug
+			scons platform=x11 -j16 tools=yes target=release_debug
+			scons platform=server -j16 tools=yes target=release_debug
 		'''
 	}
 	stage("build-templates-linux") {
 		sh '''#!/bin/sh
 			cd godot-updated
-			scons platform=x11 -j8 tools=no target=debug
-			scons platform=x11 -j8 tools=no target=release_debug
-			scons platform=x11 -j8 tools=no target=release
-			scons platform=server -j8 tools=no target=release_debug
+			scons platform=x11 -j16 tools=no target=debug
+			scons platform=x11 -j16 tools=no target=release_debug
+			scons platform=x11 -j16 tools=no target=release
+			scons platform=server -j16 tools=no target=release_debug
+		'''
+	}
+	stage("build-templates-windows") {
+		sh '''#!/bin/sh
+			cd godot-updated
+			scons platform=windows -j16 tools=no target=debug bits=64
+			scons platform=windows -j16 tools=no target=debug bits=32
+			scons platform=windows -j16 tools=no target=release_debug bits=64
+			scons platform=windows -j16 tools=no target=release_debug bits=32
+			scons platform=windows -j16 tools=no target=release bits=64
+			scons platform=windows -j16 tools=no target=release bits=32
 		'''
 	}
 	stage("artifacts") {
