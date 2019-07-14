@@ -65,6 +65,7 @@ node('docker && ubuntu-16.04') {
 	stage("build-mingw-toolchain") {
 		git_clone('git://github.com/Zeranoe/mingw-w64-build', 'master', 'mingw-build')
 		sh '''#!/bin/sh
+			cd mingw-build
 			./mingw-w64-build --help
 		'''
 	}
