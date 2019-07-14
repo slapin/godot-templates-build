@@ -26,6 +26,6 @@ node('docker && ubuntu-16.04') {
 		tar zcf godot-templates.tar.gz godot-templates
 		zip -r godot-templates.zip godot-templates
 	'''
-	archiveArtifacts artifacts: godot-templates.tar.gz onlyIfSuccessful: true
-	archiveArtifacts artifacts: godot-templates.zip onlyIfSuccessful: true
+	archiveArtifacts artifacts: "godot-templates.tar.gz", onlyIfSuccessful: true
+	archiveArtifacts artifacts: "godot-templates.zip", onlyIfSuccessful: true
 }
