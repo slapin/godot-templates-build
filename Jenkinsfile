@@ -124,6 +124,8 @@ node('docker && ubuntu-18.04') {
 	stage("build-templates-windows") {
 		sh '''#!/bin/sh
 			cd godot-updated-2
+			x86_64-w64-mingw32-g++ --version
+			x86_64-w64-mingw32-g++ -v
 			set -e
 			scons verbose=yes progress=no platform=windows -j16 tools=no target=debug bits=64
 			scons verbose=yes progress=no platform=windows -j16 tools=no target=debug bits=32
