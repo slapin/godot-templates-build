@@ -137,6 +137,7 @@ node('docker && ubuntu-18.04') {
 		sh '''#!/bin/sh
 			rm -Rf godot-templates
 			mkdir godot-templates
+			cp godot-updated/bin/* godot-templates
 			cp godot-updated-2/bin/* godot-templates
 			tar zcf godot-templates.tar.gz godot-templates
 			zip -r godot-templates.zip godot-templates
