@@ -10,7 +10,7 @@ def git_clone(url, branch, dirname)
 	userRemoteConfigs: [[url: url]]])
 }
 node('docker && ubuntu-16.04') {
-	stage("clean"( {
+	stage("clean") {
 		sh '''#!/bin/sh
 			rm -Rf godot-updated
 		'''
@@ -119,7 +119,7 @@ node('docker && ubuntu-16.04') {
 	}
 }
 node('docker && ubuntu-16.04') {
-	stage("clean"( {
+	stage("clean") {
 		sh '''#!/bin/sh
 			rm -Rf godot-updated
 		'''
