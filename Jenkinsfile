@@ -92,6 +92,7 @@ node('docker && ubuntu-16.04') {
 			. emsdk_env.sh
 			cd ..
 			cd godot-updated
+			git log |head -20
 			scons platform=javascript tools=no target=release javascript_eval=no
 			scons platform=javascript tools=no target=release_debug javascript_eval=no
 		'''
