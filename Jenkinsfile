@@ -12,7 +12,7 @@ def git_clone(url, branch, dirname)
 node('docker && ubuntu-16.04') {
 	stage("clean") {
 		sh '''#!/bin/sh
-			rm -Rf godot-updated
+			rm -Rf godot-updated mingw-build
 		'''
 	}
 	stage("clone") {
@@ -44,8 +44,8 @@ node('docker && ubuntu-16.04') {
 			# tar xf mingw-w64-v5.0.4.tar.bz2
 			# wget -Ointsafe.h https://raw.githubusercontent.com/Alexpux/mingw-w64/master/mingw-w64-headers/include/intsafe.h
 			# cp intsafe.h godot-updated/thirdparty/mbedtls/include/
-			wget https://github.com/slapin/build-mingw/releases/download/2019_29_0715_0205/mingw-build.tar.bz2
-			tar xf mingw-build.tar.bz2
+			#wget https://github.com/slapin/build-mingw/releases/download/2019_29_0715_0205/mingw-build.tar.bz2
+			#tar xf mingw-build.tar.bz2
 
 		'''
 	}
@@ -69,32 +69,6 @@ node('docker && ubuntu-16.04') {
 			scons verbose=yes progress=no platform=server -j16 tools=no target=release_debug
 		'''
 	}
-*/
-/*
-	stage("build-mingw-toolchain") {
-		git_clone('git://github.com/Zeranoe/mingw-w64-build', 'master', 'mingw-build')
-		sh '''#!/bin/sh
-			cd mingw-build
-			./mingw-w64-build --help
-			set -e
-			./mingw-w64-build i686 x86_64
-		'''
-	}
-	stage("build-templates-windows") {
-		sh '''#!/bin/sh
-			find mingw-build -maxdepth 3 -ls
-			export PATH=$PATH:$(pwd)/mingw-build/x86_64-w64-mingw32/bin:$(pwd)/mingw-build/i686-w64-mingw32/bin
-			cd godot-updated
-			set -e
-			scons verbose=yes progress=no platform=windows -j16 tools=no target=debug bits=64
-			scons verbose=yes progress=no platform=windows -j16 tools=no target=debug bits=32
-			scons verbose=yes progress=no platform=windows -j16 tools=no target=release_debug bits=64
-			scons verbose=yes progress=no platform=windows -j16 tools=no target=release_debug bits=32
-			scons verbose=yes progress=no platform=windows -j16 tools=no target=release bits=64
-			scons verbose=yes progress=no platform=windows -j16 tools=no target=release bits=32
-		'''
-	}
-*/
 	stage("build-templates-web") {
 		sh '''#!/bin/bash
 			cd emsdk
@@ -117,6 +91,7 @@ node('docker && ubuntu-16.04') {
 		archiveArtifacts artifacts: "godot-templates.tar.gz", onlyIfSuccessful: true
 		archiveArtifacts artifacts: "godot-templates.zip", onlyIfSuccessful: true
 	}
+*/
 }
 node('docker && ubuntu-16.04') {
 	stage("clean") {
@@ -148,8 +123,6 @@ node('docker && ubuntu-16.04') {
 	}
 	stage("build-templates-windows") {
 		sh '''#!/bin/sh
-			find mingw-build -maxdepth 3 -ls
-			export PATH=$PATH:$(pwd)/mingw-build/x86_64-w64-mingw32/bin:$(pwd)/mingw-build/i686-w64-mingw32/bin
 			cd godot-updated-2
 			set -e
 			scons verbose=yes progress=no platform=windows -j16 tools=no target=debug bits=64
