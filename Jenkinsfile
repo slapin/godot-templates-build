@@ -63,6 +63,7 @@ node('docker && ubuntu-16.04') {
 		'''
 	}
 */
+/*
 	stage("build-mingw-toolchain") {
 		git_clone('git://github.com/Zeranoe/mingw-w64-build', 'master', 'mingw-build')
 		sh '''#!/bin/sh
@@ -84,6 +85,7 @@ node('docker && ubuntu-16.04') {
 			scons platform=windows -j16 tools=no target=release bits=32
 		'''
 	}
+*/
 	stage("build-templates-web") {
 		sh '''#!/bin/bash
 			cd emsdk
