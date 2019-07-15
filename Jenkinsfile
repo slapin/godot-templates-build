@@ -93,7 +93,7 @@ node('docker && ubuntu-16.04') {
 	}
 */
 }
-node('docker && ubuntu-16.04') {
+node('docker && ubuntu-18.04') {
 	stage("clean") {
 		sh '''#!/bin/sh
 			rm -Rf godot-updated-2
