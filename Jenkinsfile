@@ -49,16 +49,46 @@ node('docker && ubuntu-16.04') {
 
 		'''
 	}
-	stage("build-templates-android") {
+	stage("build-templates-android-debug") {
 		sh '''#!/bin/sh
 			cd godot-updated
 			export ANDROID_HOME=$(pwd)/godot-dev/build-tools/android-sdk;
 			export ANDROID_NDK_ROOT=$(pwd)/godot-dev/build-tools/android-ndk;
 
 			set -e
-			scons verbose=yes progress=no platform=android -j16 tools=no target=debug
-			scons verbose=yes progress=no platform=android -j16 tools=no target=release_debug
-			scons verbose=yes progress=no platform=android -j16 tools=no target=release
+			scons verbose=yes progress=no platform=android -j16 tools=no target=debug android_arch=armv7
+			scons verbose=yes progress=no platform=android -j16 tools=no target=debug android_arch=arm64v8
+			scons verbose=yes progress=no platform=android -j16 tools=no target=debug android_arch=x86
+			cd platform/android/java
+			./gradlew build
+		'''
+	}
+	stage("build-templates-android-release-debug") {
+		sh '''#!/bin/sh
+			cd godot-updated
+			export ANDROID_HOME=$(pwd)/godot-dev/build-tools/android-sdk;
+			export ANDROID_NDK_ROOT=$(pwd)/godot-dev/build-tools/android-ndk;
+
+			set -e
+			scons verbose=yes progress=no platform=android -j16 tools=no target=release_debug android_arch=armv7
+			scons verbose=yes progress=no platform=android -j16 tools=no target=release_debug android_arch=arm64v8
+			scons verbose=yes progress=no platform=android -j16 tools=no target=release_debug android_arch=x86
+			cd platform/android/java
+			./gradlew build
+		'''
+	}
+	stage("build-templates-android-release") {
+		sh '''#!/bin/sh
+			cd godot-updated
+			export ANDROID_HOME=$(pwd)/godot-dev/build-tools/android-sdk;
+			export ANDROID_NDK_ROOT=$(pwd)/godot-dev/build-tools/android-ndk;
+
+			set -e
+			scons verbose=yes progress=no platform=android -j16 tools=no target=release android_arch=armv7
+			scons verbose=yes progress=no platform=android -j16 tools=no target=release android_arch=arm64v8
+			scons verbose=yes progress=no platform=android -j16 tools=no target=release android_arch=x86
+			cd platform/android/java
+			./gradlew build
 		'''
 	}
 	stage("build-tools-linux") {
