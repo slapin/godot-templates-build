@@ -58,10 +58,10 @@ node('docker && ubuntu-16.04') {
 		sh '''#!/bin/sh
 			cd godot-updated
 			set -e
-			scons platform=x11 -j16 tools=no target=debug
-			scons platform=x11 -j16 tools=no target=release_debug
-			scons platform=x11 -j16 tools=no target=release
-			scons platform=server -j16 tools=no target=release_debug
+			scons verbose=yes progress=no platform=x11 -j16 tools=no target=debug
+			scons verbose=yes progress=no platform=x11 -j16 tools=no target=release_debug
+			scons verbose=yes progress=no platform=x11 -j16 tools=no target=release
+			scons verbose=yes progress=no platform=server -j16 tools=no target=release_debug
 		'''
 	}
 */
@@ -81,12 +81,12 @@ node('docker && ubuntu-16.04') {
 			find mingw-build -maxdepth 3 -ls
 			cd godot-updated
 			set -e
-			scons platform=windows -j16 tools=no target=debug bits=64
-			scons platform=windows -j16 tools=no target=debug bits=32
-			scons platform=windows -j16 tools=no target=release_debug bits=64
-			scons platform=windows -j16 tools=no target=release_debug bits=32
-			scons platform=windows -j16 tools=no target=release bits=64
-			scons platform=windows -j16 tools=no target=release bits=32
+			scons verbose=yes progress=no platform=windows -j16 tools=no target=debug bits=64
+			scons verbose=yes progress=no platform=windows -j16 tools=no target=debug bits=32
+			scons verbose=yes progress=no platform=windows -j16 tools=no target=release_debug bits=64
+			scons verbose=yes progress=no platform=windows -j16 tools=no target=release_debug bits=32
+			scons verbose=yes progress=no platform=windows -j16 tools=no target=release bits=64
+			scons verbose=yes progress=no platform=windows -j16 tools=no target=release bits=32
 		'''
 	}
 	stage("build-templates-web") {
@@ -96,8 +96,8 @@ node('docker && ubuntu-16.04') {
 			cd ..
 			cd godot-updated
 			git log |head -20
-			scons platform=javascript -j16 tools=no target=release javascript_eval=no
-			scons platform=javascript -j16 tools=no target=release_debug javascript_eval=no
+			scons verbose=yes progress=no platform=javascript -j16 tools=no target=release javascript_eval=no
+			scons verbose=yes progress=no platform=javascript -j16 tools=no target=release_debug javascript_eval=no
 		'''
 	}
 	stage("artifacts") {
