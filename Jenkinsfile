@@ -49,7 +49,18 @@ node('docker && ubuntu-16.04') {
 
 		'''
 	}
-/*
+	stage("build-templates-android") {
+		sh '''#!/bin/sh
+			cd godot-updated
+			export ANDROID_HOME=$(pwd)/godot-dev/build-tools/android-sdk;
+			export ANDROID_NDK_ROOT=$(pwd)/godot-dev/build-tools/android-ndk;
+
+			set -e
+			scons verbose=yes progress=no platform=android -j16 tools=no target=debug
+			scons verbose=yes progress=no platform=android -j16 tools=no target=release_debug
+			scons verbose=yes progress=no platform=android -j16 tools=no target=release
+		'''
+	}
 	stage("build-tools-linux") {
 		sh '''#!/bin/sh
 			cd godot-updated
@@ -80,6 +91,7 @@ node('docker && ubuntu-16.04') {
 			scons verbose=yes progress=no platform=javascript -j16 tools=no target=release_debug javascript_eval=no
 		'''
 	}
+/*
 	stage("artifacts") {
 		sh '''#!/bin/sh
 			rm -Rf godot-templates
@@ -119,6 +131,10 @@ node('docker && ubuntu-18.04') {
 			# chmod +x butler
 			# ./butler -V
 			# cd ..
+			update-alternatives —set i686-w64-mingw32-gcc /usr/bin/i686-w64-mingw32-gcc-posix
+			update-alternatives —set i686-w64-mingw32-g++ /usr/bin/i686-w64-mingw32-g++-posix
+			update-alternatives —set x86_64-w64-mingw32-gcc /usr/bin/x86_64-w64-mingw32-gcc-posix
+			update-alternatives —set x86_64-w64-mingw32-g++ /usr/bin/x86_64-w64-mingw32-g++-posix
 		'''
 	}
 	stage("build-templates-windows") {
