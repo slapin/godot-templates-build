@@ -10,6 +10,11 @@ def git_clone(url, branch, dirname)
 	userRemoteConfigs: [[url: url]]])
 }
 node('docker && ubuntu-16.04') {
+	stage("clean"( {
+		sh '''#!/bin/sh
+			rm -Rf godot-updated
+		'''
+	}
 	stage("clone") {
 		git_clone('git://github.com/slapin/godot', 'navigation', 'godot-updated')
 	}
