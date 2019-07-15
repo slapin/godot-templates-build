@@ -80,7 +80,6 @@ node('docker && ubuntu-16.04') {
 			./mingw-w64-build i686 x86_64
 		'''
 	}
-*/
 	stage("build-templates-windows") {
 		sh '''#!/bin/sh
 			find mingw-build -maxdepth 3 -ls
@@ -95,6 +94,7 @@ node('docker && ubuntu-16.04') {
 			scons verbose=yes progress=no platform=windows -j16 tools=no target=release bits=32
 		'''
 	}
+*/
 	stage("build-templates-web") {
 		sh '''#!/bin/bash
 			cd emsdk
@@ -118,3 +118,58 @@ node('docker && ubuntu-16.04') {
 		archiveArtifacts artifacts: "godot-templates.zip", onlyIfSuccessful: true
 	}
 }
+node('docker && ubuntu-16.04') {
+	stage("clean"( {
+		sh '''#!/bin/sh
+			rm -Rf godot-updated
+		'''
+	}
+	stage("clone") {
+		git_clone('git://github.com/slapin/godot', 'navigation', 'godot-updated-2')
+	}
+	stage("init") {
+		sh '''#!/bin/sh
+			sudo apt-get update
+			sudo apt-get -y install build-essential scons pkg-config \
+				libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev \
+				libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm libfreetype6-dev texinfo \
+				texi2html subversion
+			# cd godot-updated
+			# misc/travis/android-tools-linux.sh
+			# cd ..
+			# mkdir butler
+			# cd butler
+			# curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+			# unzip butler.zip
+			# chmod +x butler
+			# ./butler -V
+			# cd ..
+		'''
+	}
+	stage("build-templates-windows") {
+		sh '''#!/bin/sh
+			find mingw-build -maxdepth 3 -ls
+			export PATH=$PATH:$(pwd)/mingw-build/x86_64-w64-mingw32/bin:$(pwd)/mingw-build/i686-w64-mingw32/bin
+			cd godot-updated-2
+			set -e
+			scons verbose=yes progress=no platform=windows -j16 tools=no target=debug bits=64
+			scons verbose=yes progress=no platform=windows -j16 tools=no target=debug bits=32
+			scons verbose=yes progress=no platform=windows -j16 tools=no target=release_debug bits=64
+			scons verbose=yes progress=no platform=windows -j16 tools=no target=release_debug bits=32
+			scons verbose=yes progress=no platform=windows -j16 tools=no target=release bits=64
+			scons verbose=yes progress=no platform=windows -j16 tools=no target=release bits=32
+		'''
+	}
+	stage("artifacts") {
+		sh '''#!/bin/sh
+			rm -Rf godot-templates
+			mkdir godot-templates
+			cp godot-updated-2/bin/* godot-templates
+			tar zcf godot-templates.tar.gz godot-templates
+			zip -r godot-templates.zip godot-templates
+		'''
+		archiveArtifacts artifacts: "godot-templates.tar.gz", onlyIfSuccessful: true
+		archiveArtifacts artifacts: "godot-templates.zip", onlyIfSuccessful: true
+	}
+}
+
