@@ -39,6 +39,8 @@ node('docker && ubuntu-16.04') {
 			# tar xf mingw-w64-v5.0.4.tar.bz2
 			# wget -Ointsafe.h https://raw.githubusercontent.com/Alexpux/mingw-w64/master/mingw-w64-headers/include/intsafe.h
 			# cp intsafe.h godot-updated/thirdparty/mbedtls/include/
+			wget https://github.com/slapin/build-mingw/releases/download/2019_29_0715_0205/mingw-build.tar.bz2
+			tar xf mingw-build.tar.bz2
 
 		'''
 	}
@@ -73,8 +75,10 @@ node('docker && ubuntu-16.04') {
 			./mingw-w64-build i686 x86_64
 		'''
 	}
+*/
 	stage("build-templates-windows") {
 		sh '''#!/bin/sh
+			find mingw-build -maxdepth 3 -ls
 			cd godot-updated
 			set -e
 			scons platform=windows -j16 tools=no target=debug bits=64
@@ -85,7 +89,6 @@ node('docker && ubuntu-16.04') {
 			scons platform=windows -j16 tools=no target=release bits=32
 		'''
 	}
-*/
 	stage("build-templates-web") {
 		sh '''#!/bin/bash
 			cd emsdk
