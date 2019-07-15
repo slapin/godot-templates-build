@@ -79,6 +79,7 @@ node('docker && ubuntu-16.04') {
 	stage("build-templates-windows") {
 		sh '''#!/bin/sh
 			find mingw-build -maxdepth 3 -ls
+			export PATH=$PATH:$(pwd)/mingw-build/x86_64-w64-mingw32/bin:$(pwd)/mingw-build/i686-w64-mingw32/bin
 			cd godot-updated
 			set -e
 			scons verbose=yes progress=no platform=windows -j16 tools=no target=debug bits=64
