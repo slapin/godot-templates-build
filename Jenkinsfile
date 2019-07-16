@@ -16,6 +16,7 @@ node('docker && ubuntu-16.04') {
 		'''
 	}
 	stage("clone") {
+		checkout scm;
 		git_clone('git://github.com/slapin/godot', 'navigation', 'godot-updated')
 	}
 	stage("init") {
@@ -142,6 +143,7 @@ node('docker && ubuntu-18.04') {
 		'''
 	}
 	stage("clone") {
+		checkout scm;
 		git_clone('git://github.com/slapin/godot', 'navigation', 'godot-updated-2')
 	}
 	stage("init") {
