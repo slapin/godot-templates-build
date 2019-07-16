@@ -192,6 +192,15 @@ node('docker && ubuntu-18.04') {
 		'''
 		archiveArtifacts artifacts: "godot-templates.tar.gz", onlyIfSuccessful: true
 		archiveArtifacts artifacts: "godot-templates.zip", onlyIfSuccessful: true
+		withCredentials([string(credentialsId: 'github-token', variable: 'gh_token')]) {
+			withEnv(["TOKEN=$gh_token"]) {
+				sh '''#!/bin/sh
+					./upload-github-release-asset.sh github_api_token=$TOKEN \
+						owner=slapin repo=godot-templates-build \
+						tag=$(date +%Y_%V_%m%d_%H%M) filename=./godot-templates.tar.gz
+				'''
+			}
+		}
 	}
 }
 
