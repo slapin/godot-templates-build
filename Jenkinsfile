@@ -57,11 +57,15 @@ node('docker && ubuntu-16.04') {
 			export ANDROID_NDK_ROOT=$(pwd)/godot-dev/build-tools/android-ndk;
 
 			set -e
-			scons verbose=yes progress=no platform=android -j16 tools=no target=debug android_arch=armv7
-			scons verbose=yes progress=no platform=android -j16 tools=no target=debug android_arch=arm64v8
-			scons verbose=yes progress=no platform=android -j16 tools=no target=debug android_arch=x86
+			scons verbose=yes progress=no platform=android -j18 tools=no target=debug android_arch=armv7
+			scons verbose=yes progress=no platform=android -j18 tools=no target=debug android_arch=arm64v8
+			scons verbose=yes progress=no platform=android -j18 tools=no target=debug android_arch=x86
 			cd platform/android/java
 			./gradlew build
+		'''
+		sh '''#!/bin/sh
+			find ./godot-updated -name '*.apk' -ls
+			exit 1
 		'''
 	}
 	stage("build-templates-android-release-debug") {
@@ -76,6 +80,9 @@ node('docker && ubuntu-16.04') {
 			scons verbose=yes progress=no platform=android -j16 tools=no target=release_debug android_arch=x86
 			cd platform/android/java
 			./gradlew build
+		'''
+		sh '''#!/bin/sh
+			find ./godot-updated -name '*.apk' -ls
 		'''
 	}
 	stage("build-templates-android-release") {
@@ -98,6 +105,7 @@ node('docker && ubuntu-16.04') {
 			set -e
 			scons platform=x11 -j16 tools=yes target=debug
 			scons platform=x11 -j16 tools=yes target=release_debug
+			scons platform=server -j16 tools=yes target=debug
 			scons platform=server -j16 tools=yes target=release_debug
 		'''
 	}
