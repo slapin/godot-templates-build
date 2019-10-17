@@ -162,6 +162,16 @@ node('docker && ubuntu-18.04') {
 			scons verbose=yes progress=no platform=windows -j16 tools=no target=release bits=32
 		'''
 	}
+	stage("build-tools-windows") {
+		sh '''#!/bin/sh
+			cd godot-updated-2
+			x86_64-w64-mingw32-g++ --version
+			x86_64-w64-mingw32-g++ -v
+			set -e
+			scons verbose=yes progress=no platform=windows -j16 tools=yes target=release_debug bits=64
+			scons verbose=yes progress=no platform=windows -j16 tools=yes target=release_debug bits=32
+		'''
+	}
 	stage("artifacts") {
 		sh '''#!/bin/sh
 			rm -Rf godot-templates
