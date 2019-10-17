@@ -102,7 +102,7 @@ node('docker && ubuntu-16.04') {
 		'''
 	}
 	stage("stash") {
-		stash includes: 'godot-updated/bin/*' name: 'binaries-main'
+		stash includes: 'godot-updated/bin/*', name: 'binaries-main'
 	}
 /*
 	stage("artifacts") {
@@ -174,7 +174,7 @@ node('docker && ubuntu-18.04') {
 			scons verbose=yes progress=no platform=windows -j16 tools=yes target=release_debug bits=64
 			scons verbose=yes progress=no platform=windows -j16 tools=yes target=release_debug bits=32
 		'''
-		stash includes: 'godot-updated-2/bin/*' name: 'binaries-windows'
+		stash includes: 'godot-updated-2/bin/*', name: 'binaries-windows'
 	}
 	stage("artifacts") {
 		unstash 'binaries-main'
