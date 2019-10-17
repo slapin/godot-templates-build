@@ -101,6 +101,9 @@ node('docker && ubuntu-16.04') {
 			scons verbose=yes progress=no platform=javascript -j16 tools=no target=release_debug javascript_eval=no
 		'''
 	}
+	stage("stash") {
+		stash includes: 'godot-updated/bin/*' name: 'binaries-main'
+	}
 /*
 	stage("artifacts") {
 		sh '''#!/bin/sh
@@ -171,8 +174,11 @@ node('docker && ubuntu-18.04') {
 			scons verbose=yes progress=no platform=windows -j16 tools=yes target=release_debug bits=64
 			scons verbose=yes progress=no platform=windows -j16 tools=yes target=release_debug bits=32
 		'''
+		stash includes: 'godot-updated-2/bin/*' name: 'binaries-windows'
 	}
 	stage("artifacts") {
+		unstash 'binaries-main'
+		unstash 'binaries-windows'
 		sh '''#!/bin/sh
 			rm -Rf godot-templates
 			mkdir godot-templates
