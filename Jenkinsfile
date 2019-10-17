@@ -103,6 +103,7 @@ node('docker && ubuntu-16.04') {
 	}
 	stage("stash") {
 		stash includes: 'godot-updated/bin/*', name: 'binaries-main'
+		stash includes: 'godot-updated/platform/android/java/build/outputs/apk/**/*.apk', name: 'binaries-android'
 	}
 /*
 	stage("artifacts") {
@@ -179,6 +180,7 @@ node('docker && ubuntu-18.04') {
 	stage("artifacts") {
 		unstash 'binaries-main'
 		unstash 'binaries-windows'
+		unstash 'binaries-android'
 		sh '''#!/bin/sh
 			rm -Rf godot-templates
 			mkdir godot-templates
