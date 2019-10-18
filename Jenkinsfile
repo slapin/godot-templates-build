@@ -185,6 +185,8 @@ node('docker && ubuntu-18.04') {
 			rm -Rf godot-templates
 			mkdir godot-templates
 			cp godot-updated/bin/* godot-templates
+			cp godot-updated/platform/android/java/app/build/outputs/apk/debug/android_debug.apk godot-templates/android_debug.apk
+			cp platform/android/java/app/build/outputs/apk/release/android_release.apk godot-templates/android_release.apk
 			cp godot-updated/platform/android/java/app/build/outputs/apk/debug/java-debug-unsigned.apk godot-templates/android_debug.apk
 			cp godot-updated/platform/android/java/app/build/outputs/apk/release/java-release-unsigned.apk godot-templates/android_release.apk
 			cp godot-updated-2/bin/* godot-templates
