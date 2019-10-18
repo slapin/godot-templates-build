@@ -103,7 +103,7 @@ node('docker && ubuntu-16.04') {
 	}
 	stage("stash") {
 		stash includes: 'godot-updated/bin/*', name: 'binaries-main'
-		stash includes: 'godot-updated/platform/android/java/build/outputs/apk/**/*.apk', name: 'binaries-android'
+		stash includes: 'godot-updated/platform/android/java/app/build/outputs/apk/**/*.apk', name: 'binaries-android'
 	}
 /*
 	stage("artifacts") {
@@ -185,8 +185,8 @@ node('docker && ubuntu-18.04') {
 			rm -Rf godot-templates
 			mkdir godot-templates
 			cp godot-updated/bin/* godot-templates
-			cp godot-updated/platform/android/java/build/outputs/apk/debug/java-debug-unsigned.apk godot-templates/android_debug.apk
-			cp godot-updated/platform/android/java/build/outputs/apk/release/java-release-unsigned.apk godot-templates/android_release.apk
+			cp godot-updated/platform/android/java/app/build/outputs/apk/debug/java-debug-unsigned.apk godot-templates/android_debug.apk
+			cp godot-updated/platform/android/java/app/build/outputs/apk/release/java-release-unsigned.apk godot-templates/android_release.apk
 			cp godot-updated-2/bin/* godot-templates
 			tar zcf godot-templates.tar.gz godot-templates
 			zip -r godot-templates.zip godot-templates
